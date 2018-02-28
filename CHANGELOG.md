@@ -1,7 +1,12 @@
 # Changelog
 
-Change history for mcollective-sysctl-data.
+Change history for `choria/mcollective_data_sysctl`
 
+## 3.0.0
+
+Release 2018-02-28
+
+ * Initial release as part of the Choria Project
 
 ## 2.0.1
 

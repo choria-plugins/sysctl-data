@@ -24,26 +24,26 @@ desc "Expands the action details section in a README.md file"
 task :readme_expand do
   ddl_file = Dir.glob(File.join("agent/*.ddl")).first
 
-  return unless ddl_file
+  if ddl_file
+    ddl = MCollective::DDL.new("package", :agent, false)
+    ddl.instance_eval(File.read(ddl_file))
 
-  ddl = MCollective::DDL.new("package", :agent, false)
-  ddl.instance_eval(File.read(ddl_file))
-
-  lines = File.readlines("puppet/README.md").map do |line|
-    if line =~ /^<\!--- actions -->/
-      [
-        "## Actions\n\n",
-        "This agent provides the following actions, for details about each please run `mco plugin doc agent/%s`\n\n" % ddl.meta[:name]
-      ] + ddl.entities.keys.sort.map do |action|
-        " * **%s** - %s\n" % [action, ddl.entities[action][:description]]
+    lines = File.readlines("puppet/README.md").map do |line|
+      if line =~ /^<\!--- actions -->/
+        [
+          "## Actions\n\n",
+          "This agent provides the following actions, for details about each please run `mco plugin doc agent/%s`\n\n" % ddl.meta[:name]
+        ] + ddl.entities.keys.sort.map do |action|
+          " * **%s** - %s\n" % [action, ddl.entities[action][:description]]
+        end
+      else
+        line
       end
-    else
-      line
-    end
-  end.flatten
+    end.flatten
 
-  File.open("puppet/README.md", "w") do |f|
-    f.print lines.join
+    File.open("puppet/README.md", "w") do |f|
+      f.print lines.join
+    end
   end
 end
 
