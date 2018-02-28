@@ -1,2 +1,8 @@
+Gemfile.lock
 ext/packaging
-/pkg/
+puppet/README.md
+puppet/CHANGELOG.md
+puppet/LICENSE
+puppet/NOTICE
+*.tar.gz
+.ruby-version
